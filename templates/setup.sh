@@ -57,14 +57,10 @@ cont_dest="${SENV[envd]}/${SENV[cont]}"
 #################################################################################
 [[ "${@}" =~ "python" ]] || echo "Not touching python"
 [[ "${@}" =~ "all" ]] || [[ "${@}" =~ "python" ]] && \
-    echo "building python env" && \
-    $SING exec ${ENV[cont]} bash -c "virtualenv ${ENV[pyenv]} && \
-    source ${ENV[pyenv]}/bin/activate && \
-    python3.8 -m pip install --upgrade pip && \
-    cd functional_scenes && poetry install" && \
-    export MAX_JOBS="${ENV['max_jobs']}" && \
-    ./run.sh python3.8 -m pip install torch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 && \
-    ./run.sh python3.8 -m pip install -v git+https://github.com/facebookresearch/pytorch3d.git
+    echo "building python env at ${SENV[pyenv]}" && \
+    $SING exec "${cont_dest}" bash -c "virtualenv ${SENV[pyenv]} && \
+    source ${SENV[pyenv]}/bin/activate && \
+    python3.8 -m pip install --upgrade"
 
 #################################################################################
 # Julia setup
@@ -72,7 +68,7 @@ cont_dest="${SENV[envd]}/${SENV[cont]}"
 [[ "${@}" =~ "julia" ]] || echo "Not touching julia"
 [[ "${@}" =~ "all" ]] || [[ "${@}" =~ "julia" ]] && \
     echo "building julia env" && \
-    ./run.sh julia -e '"using Pkg; Pkg.instantiate();"'
+    "${SENV[envd]}/run.sh" julia -e '"using Pkg; Pkg.instantiate();"'
 
 #################################################################################
 # Project data
