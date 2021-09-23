@@ -54,7 +54,7 @@ printf "(\xE2\x9C\x94) Adding mount points\n"
 #################################################################################
 # Bind project SPATHS
 #################################################################################
-base_path="${SENV[envd]}"
+base_path="${SENV[spath]}"
 BS="${BS} -B ${PWD}:/project"
 echo "( ) Binding project paths"
 printf "\t%s \u2190 %s\n" "/project" "${PWD}"
